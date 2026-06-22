@@ -31,6 +31,43 @@
 $ npm install
 ```
 
+## Database setup
+
+This project uses PostgreSQL through Docker and Prisma.
+
+1. Copy the local environment file:
+
+```bash
+$ cp .env.example .env
+```
+
+2. Start the Nest app and PostgreSQL:
+
+```bash
+$ npm run docker:dev
+```
+
+The API will be available at `http://localhost:3000`.
+
+3. Run Prisma migrations:
+
+```bash
+$ npm run prisma:migrate
+```
+
+Useful database commands:
+
+```bash
+# stop the app and database containers
+$ npm run docker:down
+
+# stop the app and database, delete local data, then start again
+$ npm run docker:reset
+
+# open Prisma Studio
+$ npm run prisma:studio
+```
+
 ## Compile and run the project
 
 ```bash
@@ -42,6 +79,26 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+```
+
+## Docker production
+
+Build and run a production-like setup with the compiled Nest app and PostgreSQL:
+
+```bash
+$ npm run docker:prod
+```
+
+Run pending Prisma migrations against the production-like database:
+
+```bash
+$ npm run prisma:deploy
+```
+
+Stop the production-like containers:
+
+```bash
+$ npm run docker:prod:down
 ```
 
 ## Run tests
