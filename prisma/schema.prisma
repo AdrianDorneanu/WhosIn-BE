@@ -18,6 +18,12 @@ enum UserStatus {
   SUSPENDED
 }
 
+enum GameStatus {
+  UPCOMING
+  COMPLETED
+  CANCELLED
+}
+
 model User {
   id              String     @id @default(uuid()) @db.Uuid
   email           String     @unique
@@ -44,18 +50,23 @@ model Game {
   organizerId String @db.Uuid
   organizer   User   @relation("GameOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
 
-  title      String
-  sport      String
-  startsAt   DateTime
-  endsAt     DateTime?
-  timezone   String
-  location   String
-  maxPlayers Int
+  title       String
+  sport       String
+  startsAt    DateTime
+  endsAt      DateTime
+  location    String
+  maxPlayers  Int
+  status      GameStatus @default(UPCOMING)
+  cancelledAt DateTime?  @db.Timestamptz(3)
+
+  costPerPlayer Decimal? @db.Decimal(10, 2)
+  notes         String?  @db.VarChar(500)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([organizerId])
   @@index([startsAt])
+  @@index([status])
   @@map("games")
 }
